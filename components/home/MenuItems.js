@@ -3,42 +3,42 @@ import { Divider } from "@react-native-material/core";
 
 const foods = [
   {
-    image: require("../Canteen Go/assets/images/meal.png"),
+    image: require("../../assets/images/meal.png"),
     title: "Meal",
     price: "₹ 50",
   },
   {
-    image: require("./assets/images/burger.png"),
+    image: require("../../assets/images/burger.png"),
     title: "Snacks",
     price: "₹ 50",
   },
   {
-    image: require("./assets/images/donut.png"),
+    image: require("../../assets/images/donut.png"),
     title: "Deserts",
     price: "₹ 50",
   },
   {
-    image: require("./assets/images/drink.png"),
+    image: require("../../assets/images/drink.png"),
     title: "Drinks",
     price: "₹ 50",
   },
   {
-    image: require("../Canteen Go/assets/images/meal.png"),
+    image: require("../../assets/images/meal.png"),
     title: "Meal",
     price: "₹ 50",
   },
   {
-    image: require("./assets/images/burger.png"),
+    image: require("../../assets/images/burger.png"),
     title: "Snacks",
     price: "₹ 50",
   },
   {
-    image: require("./assets/images/donut.png"),
+    image: require("../../assets/images/donut.png"),
     title: "Deserts",
     price: "₹ 50",
   },
   {
-    image: require("./assets/images/drink.png"),
+    image: require("../../assets/images/drink.png"),
     title: "Drinks",
     price: "₹ 50",
   },

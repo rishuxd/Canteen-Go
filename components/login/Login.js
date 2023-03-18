@@ -9,7 +9,6 @@ import {
 export default function Login() {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
       <View style={styles.cont_child}>
         <Text style={styles.onboard_text}>Welcome onboard, Foodie!</Text>
       </View>

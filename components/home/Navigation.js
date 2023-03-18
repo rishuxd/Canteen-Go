@@ -2,35 +2,35 @@ import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
 
 const items = [
   {
-    image: require("../Canteen Go/assets/images/meal.png"),
+    image: require("../../assets/images/meal.png"),
     text: "Meal",
   },
   {
-    image: require("./assets/images/burger.png"),
+    image: require("../../assets/images/burger.png"),
     text: "Snacks",
   },
   {
-    image: require("./assets/images/donut.png"),
+    image: require("../../assets/images/donut.png"),
     text: "Deserts",
   },
   {
-    image: require("./assets/images/drink.png"),
+    image: require("../../assets/images/drink.png"),
     text: "Drinks",
   },
   {
-    image: require("../Canteen Go/assets/images/meal.png"),
+    image: require("../../assets/images/meal.png"),
     text: "Meal",
   },
   {
-    image: require("./assets/images/burger.png"),
+    image: require("../../assets/images/burger.png"),
     text: "Snacks",
   },
   {
-    image: require("./assets/images/donut.png"),
+    image: require("../../assets/images/donut.png"),
     text: "Deserts",
   },
   {
-    image: require("./assets/images/drink.png"),
+    image: require("../../assets/images/drink.png"),
     text: "Drinks",
   },
 ];
