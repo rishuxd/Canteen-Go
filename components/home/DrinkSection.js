@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MealSection() {
+export default function DrinkSection() {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -153,13 +153,15 @@ export default function MealSection() {
         >
           <ImageBackground
             source={{
-              uri: "https://assets.vogue.in/photos/5f8d276e31243af9c390adc4/3:2/w_1079,h_719,c_limit/DIY%20meals.jpg",
+              uri: "https://www.thespruceeats.com/thmb/PKK63OuoTMaezzPYvaq2fy-TB5Y=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bar101-cocktails-504754220-580e83415f9b58564cf470b9.jpg",
             }}
             style={styles.aboutImages}
             imageStyle={{ borderRadius: 10, opacity: 0.6 }}
           >
-            <Text style={styles.aboutTitle}>Meals</Text>
-            <Text style={styles.aboutDesc}>Get your meals here foodie!</Text>
+            <Text style={styles.aboutTitle}>Beverages</Text>
+            <Text style={styles.aboutDesc}>
+              Get your awesome drinks here foodie!
+            </Text>
           </ImageBackground>
         </TouchableOpacity>
 
@@ -172,23 +174,7 @@ export default function MealSection() {
                     <FoodImage food={food} />
                     <FoodInfo food={food} />
                   </View>
-                  <View style={{ marginLeft: 20, alignItems: "center" }}>
-                    <Text style={{ fontSize: 18 }}>{count}</Text>
-                    <View style={styles.actionBtn}>
-                      <Icon
-                        name="remove"
-                        size={25}
-                        color="#fff"
-                        onPress={() => setCount(count - 1)}
-                      />
-                      <Icon
-                        name="add"
-                        size={25}
-                        color="#fff"
-                        onPress={() => setCount(count + 1)}
-                      />
-                    </View>
-                  </View>
+                  <FoodButton />
                 </View>
               </View>
             ))}
@@ -200,7 +186,7 @@ export default function MealSection() {
 }
 
 const FoodInfo = (props) => (
-  <View style={{ marginLeft: 10 }}>
+  <View style={{ marginLeft: 15 }}>
     <Text style={styles.titleStyle}>{props.food.title}</Text>
     <Text style={{ fontSize: 12, color: "#666666" }}>{props.food.desc}</Text>
     <Text>{props.food.price}</Text>
@@ -210,5 +196,15 @@ const FoodInfo = (props) => (
 const FoodImage = ({ ...props }) => (
   <View>
     <Image source={props.food.image} style={styles.foodImage} />
+  </View>
+);
+
+const FoodButton = () => (
+  <View style={{ marginLeft: 20, alignItems: "center" }}>
+    <Text style={{ fontSize: 18 }}>3</Text>
+    <View style={styles.actionBtn}>
+      <Icon name="remove" size={25} color="#fff" />
+      <Icon name="add" size={25} color="#fff" />
+    </View>
   </View>
 );
