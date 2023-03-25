@@ -1,26 +1,35 @@
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import MealSection from "../components/home/MealSection";
 import DrinkSection from "../components/home/DrinkSection";
 import SnackSection from "../components/home/SnacksSection";
 import DesertSection from "../components/home/DesertSection";
 import TopBar from "../components/home/TopBar";
 import ViewCart from "../components/home/ViewCart";
+import { useEffect } from "react";
+import { getProducts } from "../redux/actions/productAction";
+import { useDispatch, useSelector } from "react-redux";
 
-const Home = () => {
+const Home = ({ navigation }) => {
+  const { products } = useSelector((state) => state.getProducts);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
   return (
-    <View style={{ marginTop: 0, height: "100%" }}>
+    <View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <TopBar />
-        <DrinkSection />
-        <MealSection />
-        <SnackSection />
-        <DesertSection />
+        <DrinkSection products={products} />
+        <MealSection products={products} />
+        <SnackSection products={products} />
+        <DesertSection products={products} />
       </ScrollView>
-      <ViewCart />
+      <ViewCart navigation={navigation} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default Home;

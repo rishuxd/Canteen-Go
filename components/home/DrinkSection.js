@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/actions/cartActions";
+
 import {
   View,
   Text,
@@ -6,60 +10,84 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
+  Button,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { useState } from "react";
 
-const foods = [
-  {
-    image: require("../../assets/images/meal.png"),
-    title: "Thali",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/burger.png"),
-    title: "Burger",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/donut.png"),
-    title: "Oreo Nuts",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/drink.png"),
-    title: "Drinks",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/meal.png"),
-    title: "Meal",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/burger.png"),
-    title: "Snacks",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/donut.png"),
-    title: "Deserts",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/drink.png"),
-    title: "Drinks",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-];
+export default function DrinkSection({ products }) {
+  const [open, setOpen] = useState(false);
+  const [quantity] = useState(1);
+
+  const dispatch = useDispatch();
+
+  const addItemToCart = (id) => {
+    dispatch(addToCart(id, quantity));
+  };
+
+  return (
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <View style={styles.innerContainer}>
+        <TouchableOpacity
+          style={styles.about}
+          onPress={() => {
+            setOpen(!open);
+          }}
+        >
+          <ImageBackground
+            source={{
+              uri: "https://www.thespruceeats.com/thmb/PKK63OuoTMaezzPYvaq2fy-TB5Y=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bar101-cocktails-504754220-580e83415f9b58564cf470b9.jpg",
+            }}
+            style={styles.aboutImages}
+            imageStyle={{ borderRadius: 10, opacity: 0.6 }}
+          >
+            <Text style={styles.aboutTitle}>Beverages</Text>
+            <Text style={styles.aboutDesc}>
+              Get your awesome drinks here foodie!
+            </Text>
+          </ImageBackground>
+        </TouchableOpacity>
+
+        {open && (
+          <View>
+            {products
+              .filter((item) => item.category == "Drinks")
+              .map((product, index) => (
+                <View key={index}>
+                  <View style={styles.menuItemStyle}>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <FoodImage food={product} />
+                      <FoodInfo food={product} />
+                    </View>
+                    <Button
+                      title="ADD"
+                      onPress={() => addItemToCart(product.id)}
+                    />
+                  </View>
+                </View>
+              ))}
+          </View>
+        )}
+      </View>
+    </ScrollView>
+  );
+}
+
+const FoodInfo = (props) => (
+  <View style={{ marginLeft: 15 }}>
+    <Text style={styles.titleStyle}>{props.food.name}</Text>
+    <Text style={{ fontSize: 12, color: "#666666" }}>
+      {props.food.allergenAlert}
+    </Text>
+    <Text>₹{props.food.price.full}</Text>
+  </View>
+);
+
+const FoodImage = ({ ...props }) => (
+  <View>
+    <Image source={{ uri: props.food.url }} style={styles.foodImage} />
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {},
@@ -137,74 +165,3 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 });
-
-export default function DrinkSection() {
-  const [open, setOpen] = useState(false);
-  const [count, setCount] = useState(0);
-
-  return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-      <View style={styles.innerContainer}>
-        <TouchableOpacity
-          style={styles.about}
-          onPress={() => {
-            setOpen(!open);
-          }}
-        >
-          <ImageBackground
-            source={{
-              uri: "https://www.thespruceeats.com/thmb/PKK63OuoTMaezzPYvaq2fy-TB5Y=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bar101-cocktails-504754220-580e83415f9b58564cf470b9.jpg",
-            }}
-            style={styles.aboutImages}
-            imageStyle={{ borderRadius: 10, opacity: 0.6 }}
-          >
-            <Text style={styles.aboutTitle}>Beverages</Text>
-            <Text style={styles.aboutDesc}>
-              Get your awesome drinks here foodie!
-            </Text>
-          </ImageBackground>
-        </TouchableOpacity>
-
-        {open && (
-          <View>
-            {foods.map((food, index) => (
-              <View key={index}>
-                <View style={styles.menuItemStyle}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <FoodImage food={food} />
-                    <FoodInfo food={food} />
-                  </View>
-                  <FoodButton />
-                </View>
-              </View>
-            ))}
-          </View>
-        )}
-      </View>
-    </ScrollView>
-  );
-}
-
-const FoodInfo = (props) => (
-  <View style={{ marginLeft: 15 }}>
-    <Text style={styles.titleStyle}>{props.food.title}</Text>
-    <Text style={{ fontSize: 12, color: "#666666" }}>{props.food.desc}</Text>
-    <Text>{props.food.price}</Text>
-  </View>
-);
-
-const FoodImage = ({ ...props }) => (
-  <View>
-    <Image source={props.food.image} style={styles.foodImage} />
-  </View>
-);
-
-const FoodButton = () => (
-  <View style={{ marginLeft: 20, alignItems: "center" }}>
-    <Text style={{ fontSize: 18 }}>3</Text>
-    <View style={styles.actionBtn}>
-      <Icon name="remove" size={25} color="#fff" />
-      <Icon name="add" size={25} color="#fff" />
-    </View>
-  </View>
-);

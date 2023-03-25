@@ -1,6 +1,9 @@
-import React from "react";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { placeOrder } from "../service/api";
+
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   Text,
@@ -8,40 +11,52 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
 
-const foods = [
-  {
-    image: require("../assets/images/meal.png"),
-    title: "Thali",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../assets/images/burger.png"),
-    title: "Burger",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../assets/images/donut.png"),
-    title: "Oreo Nuts",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../assets/images/drink.png"),
-    title: "Drinks",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-];
+const CartScreen = ({ navigation }) => {
+  const { cartItems } = useSelector((state) => state.cart);
 
-const CartScreen = () => {
+  const [orderItems, setOrderItems] = useState(cartItems);
+  const [totalAmt, setTotalAmt] = useState(0);
+
+  useEffect(() => {
+    const total = orderItems.reduce(
+      (s, i) => (s += i.price.full * i.quantity),
+      0
+    );
+    setTotalAmt(total);
+  }, [orderItems]);
+
+  const incrQty = (index) => {
+    console.log(cartItems);
+    setOrderItems((v) => {
+      const a = JSON.parse(JSON.stringify(v));
+      a[index].quantity += 1;
+      return [...a];
+    });
+  };
+
+  const decrQty = (index) => {
+    setOrderItems((v) => {
+      const a = JSON.parse(JSON.stringify(v));
+      a[index].quantity -= 1;
+      return [...a];
+    });
+  };
+
+  const checkOut = async () => {
+    let response = await placeOrder(orderItems);
+    if (!response) return;
+    console.log("Order placed");
+  };
+
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <View style={styles.header}>
-        <Icon name="keyboard-arrow-left" size={25} />
+        <Icon
+          name="keyboard-arrow-left"
+          size={25}
+          onPress={() => navigation.navigate("Home")}
+        />
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>Cart</Text>
       </View>
 
@@ -52,17 +67,27 @@ const CartScreen = () => {
             marginBottom: 20,
           }}
         >
-          {foods.map((food, index) => (
+          {orderItems.map((food, index) => (
             <View style={styles.menuItemStyle} key={index}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <FoodImage food={food} />
                 <FoodInfo food={food} />
               </View>
               <View style={{ marginLeft: 20, alignItems: "center" }}>
-                <Text style={{ fontSize: 18 }}>0</Text>
+                <Text style={{ fontSize: 18 }}>{food.quantity}</Text>
                 <View style={styles.actionBtn}>
-                  <Icon name="remove" size={25} color="#fff" />
-                  <Icon name="add" size={25} color="#fff" />
+                  <Icon
+                    name="remove"
+                    size={25}
+                    color="#fff"
+                    onPress={() => decrQty(index)}
+                  />
+                  <Icon
+                    name="add"
+                    size={25}
+                    color="#fff"
+                    onPress={() => incrQty(index)}
+                  />
                 </View>
               </View>
             </View>
@@ -79,10 +104,10 @@ const CartScreen = () => {
           }}
         >
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>Total Price</Text>
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>$50</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>₹{totalAmt}</Text>
         </View>
         <View style={{ alignItems: "center", marginBottom: 20 }}>
-          <TouchableOpacity style={styles.touchable}>
+          <TouchableOpacity style={styles.touchable} onPress={() => checkOut()}>
             <Text style={{ fontWeight: 500, fontSize: 20, color: "white" }}>
               CHECKOUT
             </Text>
@@ -92,6 +117,23 @@ const CartScreen = () => {
     </View>
   );
 };
+
+const FoodInfo = (props) => (
+  <View style={{ marginLeft: 10 }}>
+    <Text style={styles.titleStyle}>{props.food.name}</Text>
+    <Text style={{ fontSize: 12, color: "#666666" }}>
+      {props.food.allergenAlert}
+    </Text>
+    <Text>₹{props.food.price.full}</Text>
+  </View>
+);
+
+const FoodImage = ({ ...props }) => (
+  <View>
+    <Image source={{ uri: props.food.url }} style={styles.foodImage} />
+  </View>
+);
+
 const styles = StyleSheet.create({
   foodImage: {
     width: 80,
@@ -100,10 +142,10 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    paddingVertical: 20,
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 20,
+    marginBottom: 10,
   },
 
   menuItemStyle: {
@@ -144,19 +186,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
 });
-
-const FoodInfo = (props) => (
-  <View style={{ marginLeft: 10 }}>
-    <Text style={styles.titleStyle}>{props.food.title}</Text>
-    <Text style={{ fontSize: 12, color: "#666666" }}>{props.food.desc}</Text>
-    <Text>{props.food.price}</Text>
-  </View>
-);
-
-const FoodImage = ({ ...props }) => (
-  <View>
-    <Image source={props.food.image} style={styles.foodImage} />
-  </View>
-);
 
 export default CartScreen;

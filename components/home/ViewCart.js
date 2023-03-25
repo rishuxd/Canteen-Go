@@ -1,39 +1,14 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  Touchable,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
-import Icon from "react-native-vector-icons/AntDesign";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const ViewCart = () => {
+const ViewCart = ({ navigation }) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        flexDirection: "row",
-        position: "absolute",
-        bottom: 15,
-        zIndex: 999,
-      }}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
-        <TouchableOpacity style={styles.touchable}>
-          <Text style={{ fontWeight: 500, fontSize: 20 }}>Checkout</Text>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Icon name="shoppingcart" size={28} />
-            <Text style={{ fontWeight: 500, fontSize: 20 }}>6</Text>
-          </View>
+    <View style={styles.outer}>
+      <View style={styles.inner}>
+        <TouchableOpacity
+          style={styles.touchable}
+          onPress={() => navigation.navigate("Cart")}
+        >
+          <Text style={styles.text}>GO TO CART</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -41,16 +16,30 @@ const ViewCart = () => {
 };
 
 const styles = StyleSheet.create({
+  outer: {
+    flex: 1,
+    alignItems: "center",
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 15,
+    zIndex: 999,
+  },
+
+  inner: { flexDirection: "row", justifyContent: "center", width: "100%" },
+
   touchable: {
-    marginTop: 20,
-    backgroundColor: "#A6E3E9",
+    backgroundColor: "#228B22",
     alignItems: "center",
     padding: 13,
     borderRadius: 30,
     width: 250,
     position: "relative",
-    flexDirection: "row",
-    justifyContent: "space-around",
+  },
+
+  text: {
+    fontWeight: 500,
+    fontSize: 20,
+    color: "white",
   },
 });
 

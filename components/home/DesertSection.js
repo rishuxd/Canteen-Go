@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/actions/cartActions";
+
 import {
   View,
   Text,
@@ -8,65 +12,87 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { useState } from "react";
 
-const foods = [
-  {
-    image: require("../../assets/images/meal.png"),
-    title: "Thali",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/burger.png"),
-    title: "Burger",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/donut.png"),
-    title: "Oreo Nuts",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/drink.png"),
-    title: "Drinks",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/meal.png"),
-    title: "Meal",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/burger.png"),
-    title: "Snacks",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/donut.png"),
-    title: "Deserts",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-  {
-    image: require("../../assets/images/drink.png"),
-    title: "Drinks",
-    desc: "Rice, Dal, Roti, Sabji",
-    price: "₹ 50",
-  },
-];
+export default function DesertSection({ products }) {
+  const [open, setOpen] = useState(false);
+  const [quantity] = useState(1);
+
+  const dispatch = useDispatch();
+
+  const addItemToCart = (id) => {
+    dispatch(addToCart(id, quantity));
+  };
+
+  return (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.innerContainer}>
+        <TouchableOpacity
+          style={styles.about}
+          onPress={() => {
+            setOpen(!open);
+          }}
+        >
+          <ImageBackground
+            source={{
+              uri: "https://media.istockphoto.com/id/1185515984/photo/christmas-baking-table-scene-with-assorted-sweets-and-cookies-top-view-over-a-rustic-wood.jpg?s=612x612&w=0&k=20&c=cWVTyQfwrge2OfuWsRCAlDbZ9fSZO6pg_yuiGq9naLs=",
+            }}
+            style={styles.aboutImages}
+            imageStyle={{ borderRadius: 10, opacity: 0.6 }}
+          >
+            <Text style={styles.aboutTitle}>Deserts</Text>
+            <Text style={styles.aboutDesc}>
+              Get your awesome sweets here foodie!
+            </Text>
+          </ImageBackground>
+        </TouchableOpacity>
+
+        {open && (
+          <View>
+            {products
+              .filter((item) => item.category == "Sweets")
+              .map((product, index) => (
+                <View key={index}>
+                  <View style={styles.menuItemStyle}>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <FoodImage food={product} />
+                      <FoodInfo food={product} />
+                    </View>
+                    <Button
+                      title="ADD"
+                      onPress={() => addItemToCart(product.id)}
+                    />
+                  </View>
+                </View>
+              ))}
+          </View>
+        )}
+      </View>
+    </ScrollView>
+  );
+}
+
+const FoodInfo = (props) => (
+  <View style={{ marginLeft: 15 }}>
+    <Text style={styles.titleStyle}>{props.food.name}</Text>
+    <Text style={{ fontSize: 12, color: "#666666" }}>
+      {props.food.allergenAlert}
+    </Text>
+    <Text>₹{props.food.price.full}</Text>
+  </View>
+);
+
+const FoodImage = ({ ...props }) => (
+  <View>
+    <Image source={{ uri: props.food.url }} style={styles.foodImage} />
+  </View>
+);
 
 const styles = StyleSheet.create({
-  container: {},
-
   innerContainer: {
     marginHorizontal: 20,
+    marginBottom: 75,
   },
 
   about: {
@@ -138,73 +164,3 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 });
-
-export default function DesertSection() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-      <View style={styles.innerContainer}>
-        <TouchableOpacity
-          style={styles.about}
-          onPress={() => {
-            setOpen(!open);
-          }}
-        >
-          <ImageBackground
-            source={{
-              uri: "https://media.istockphoto.com/id/1185515984/photo/christmas-baking-table-scene-with-assorted-sweets-and-cookies-top-view-over-a-rustic-wood.jpg?s=612x612&w=0&k=20&c=cWVTyQfwrge2OfuWsRCAlDbZ9fSZO6pg_yuiGq9naLs=",
-            }}
-            style={styles.aboutImages}
-            imageStyle={{ borderRadius: 10, opacity: 0.6 }}
-          >
-            <Text style={styles.aboutTitle}>Deserts</Text>
-            <Text style={styles.aboutDesc}>
-              Get your awesome sweets here foodie!
-            </Text>
-          </ImageBackground>
-        </TouchableOpacity>
-
-        {open && (
-          <View>
-            {foods.map((food, index) => (
-              <View key={index}>
-                <View style={styles.menuItemStyle}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <FoodImage food={food} />
-                    <FoodInfo food={food} />
-                  </View>
-                  <Button title="ADD" />
-                </View>
-              </View>
-            ))}
-          </View>
-        )}
-      </View>
-    </ScrollView>
-  );
-}
-
-const FoodInfo = (props) => (
-  <View style={{ marginLeft: 15 }}>
-    <Text style={styles.titleStyle}>{props.food.title}</Text>
-    <Text style={{ fontSize: 12, color: "#666666" }}>{props.food.desc}</Text>
-    <Text>{props.food.price}</Text>
-  </View>
-);
-
-const FoodImage = ({ ...props }) => (
-  <View>
-    <Image source={props.food.image} style={styles.foodImage} />
-  </View>
-);
-
-const FoodButton = () => (
-  <View style={{ marginLeft: 20, alignItems: "center" }}>
-    <Text style={{ fontSize: 18 }}>3</Text>
-    <View style={styles.actionBtn}>
-      <Icon name="remove" size={25} color="#fff" />
-      <Icon name="add" size={25} color="#fff" />
-    </View>
-  </View>
-);
