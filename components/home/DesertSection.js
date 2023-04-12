@@ -52,18 +52,7 @@ export default function DesertSection({ products }) {
               .filter((item) => item.category == "Sweets")
               .map((product, index) => (
                 <View key={index}>
-                  <View style={styles.menuItemStyle}>
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <FoodImage food={product} />
-                      <FoodInfo food={product} />
-                    </View>
-                    <Button
-                      title="ADD"
-                      onPress={() => addItemToCart(product.id)}
-                    />
-                  </View>
+                  
                 </View>
               ))}
           </View>

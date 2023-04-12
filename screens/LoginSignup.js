@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { authenticateSignup, authenticateLogin } from "../service/api";
-
-import { DataContext } from "../context/DataProvider";
+import { getUser } from "../redux/actions/userAction";
 
 import {
   StyleSheet,
@@ -29,14 +29,13 @@ const loginInitialValues = {
   password: "",
 };
 
-const initialUser = {};
-
 const LoginSignup = ({ navigation }) => {
   const [loginOpen, setLoginOpen] = useState(loginInitialValue);
   const [signup, setSignup] = useState(signupInitialValues);
   const [login, setLogin] = useState(loginInitialValues);
   const [loginError, setLoginError] = useState(false);
-  const { user, setUser } = useState(initialUser);
+
+  const dispatch = useDispatch();
 
   const onInputChange = (name, value) => {
     setSignup({ ...signup, [name]: value });
@@ -55,6 +54,7 @@ const LoginSignup = ({ navigation }) => {
 
   const loginUser = async (navigation) => {
     let response = await authenticateLogin(login);
+    dispatch(getUser(login.email));
     if (response.status === 200) {
       navigation.navigate("Home");
     } else {
@@ -74,14 +74,12 @@ const LoginSignup = ({ navigation }) => {
               <TextInput
                 placeholder="Email/Phone no."
                 style={styles.input_box}
-                name="email"
                 onChangeText={(e) => onValueChange("email", e)}
                 value={login.email}
               />
               <TextInput
                 placeholder="Password"
                 style={styles.input_box}
-                name="password"
                 onChangeText={(e) => onValueChange("password", e)}
                 value={login.password}
               />

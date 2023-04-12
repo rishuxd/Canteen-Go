@@ -5,7 +5,7 @@ const URL = "http://10.0.2.2:8000";
 
 export const addToCart = (id, quantity) => async (dispatch) => {
   try {
-    const { data } = await axios.get(`${URL}/product/${id}`);
+    const { data } = await axios.get(`${URL}/getProducts/${id}`);
     dispatch({ type: actionType.ADD_TO_CART, payload: { ...data, quantity } });
   } catch (error) {
     dispatch({ type: actionType.ADD_TO_CART_ERROR, payload: error.message });

@@ -7,15 +7,18 @@ import TopBar from "../components/home/TopBar";
 import ViewCart from "../components/home/ViewCart";
 import { useEffect } from "react";
 import { getProducts } from "../redux/actions/productAction";
+import { getUser } from "../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 
 const Home = ({ navigation }) => {
   const { products } = useSelector((state) => state.getProducts);
+  const { user } = useSelector((state) => state.user);
+  console.log(user);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getProducts(), getProducts());
   }, [dispatch]);
 
   return (

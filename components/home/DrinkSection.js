@@ -77,9 +77,9 @@ const FoodInfo = (props) => (
   <View style={{ marginLeft: 15 }}>
     <Text style={styles.titleStyle}>{props.food.name}</Text>
     <Text style={{ fontSize: 12, color: "#666666" }}>
-      {props.food.allergenAlert}
+      {props.food.ingredients}
     </Text>
-    <Text>₹{props.food.price.full}</Text>
+    <Text>₹{props.food.price}</Text>
   </View>
 );
 

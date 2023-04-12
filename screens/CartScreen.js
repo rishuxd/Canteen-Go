@@ -19,10 +19,7 @@ const CartScreen = ({ navigation }) => {
   const [totalAmt, setTotalAmt] = useState(0);
 
   useEffect(() => {
-    const total = orderItems.reduce(
-      (s, i) => (s += i.price.full * i.quantity),
-      0
-    );
+    const total = orderItems.reduce((s, i) => (s += i.price * i.quantity), 0);
     setTotalAmt(total);
   }, [orderItems]);
 
@@ -122,9 +119,9 @@ const FoodInfo = (props) => (
   <View style={{ marginLeft: 10 }}>
     <Text style={styles.titleStyle}>{props.food.name}</Text>
     <Text style={{ fontSize: 12, color: "#666666" }}>
-      {props.food.allergenAlert}
+      {props.food.ingredients}
     </Text>
-    <Text>₹{props.food.price.full}</Text>
+    <Text>₹{props.food.price}</Text>
   </View>
 );
 
